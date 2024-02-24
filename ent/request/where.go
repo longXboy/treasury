@@ -53,7 +53,7 @@ func IDLTE(id int64) predicate.Request {
 }
 
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v int64) predicate.Request {
+func Status(v string) predicate.Request {
 	return predicate.Request(sql.FieldEQ(FieldStatus, v))
 }
 
@@ -83,43 +83,68 @@ func Executed(v bool) predicate.Request {
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v int64) predicate.Request {
+func StatusEQ(v string) predicate.Request {
 	return predicate.Request(sql.FieldEQ(FieldStatus, v))
 }
 
 // StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v int64) predicate.Request {
+func StatusNEQ(v string) predicate.Request {
 	return predicate.Request(sql.FieldNEQ(FieldStatus, v))
 }
 
 // StatusIn applies the In predicate on the "status" field.
-func StatusIn(vs ...int64) predicate.Request {
+func StatusIn(vs ...string) predicate.Request {
 	return predicate.Request(sql.FieldIn(FieldStatus, vs...))
 }
 
 // StatusNotIn applies the NotIn predicate on the "status" field.
-func StatusNotIn(vs ...int64) predicate.Request {
+func StatusNotIn(vs ...string) predicate.Request {
 	return predicate.Request(sql.FieldNotIn(FieldStatus, vs...))
 }
 
 // StatusGT applies the GT predicate on the "status" field.
-func StatusGT(v int64) predicate.Request {
+func StatusGT(v string) predicate.Request {
 	return predicate.Request(sql.FieldGT(FieldStatus, v))
 }
 
 // StatusGTE applies the GTE predicate on the "status" field.
-func StatusGTE(v int64) predicate.Request {
+func StatusGTE(v string) predicate.Request {
 	return predicate.Request(sql.FieldGTE(FieldStatus, v))
 }
 
 // StatusLT applies the LT predicate on the "status" field.
-func StatusLT(v int64) predicate.Request {
+func StatusLT(v string) predicate.Request {
 	return predicate.Request(sql.FieldLT(FieldStatus, v))
 }
 
 // StatusLTE applies the LTE predicate on the "status" field.
-func StatusLTE(v int64) predicate.Request {
+func StatusLTE(v string) predicate.Request {
 	return predicate.Request(sql.FieldLTE(FieldStatus, v))
+}
+
+// StatusContains applies the Contains predicate on the "status" field.
+func StatusContains(v string) predicate.Request {
+	return predicate.Request(sql.FieldContains(FieldStatus, v))
+}
+
+// StatusHasPrefix applies the HasPrefix predicate on the "status" field.
+func StatusHasPrefix(v string) predicate.Request {
+	return predicate.Request(sql.FieldHasPrefix(FieldStatus, v))
+}
+
+// StatusHasSuffix applies the HasSuffix predicate on the "status" field.
+func StatusHasSuffix(v string) predicate.Request {
+	return predicate.Request(sql.FieldHasSuffix(FieldStatus, v))
+}
+
+// StatusEqualFold applies the EqualFold predicate on the "status" field.
+func StatusEqualFold(v string) predicate.Request {
+	return predicate.Request(sql.FieldEqualFold(FieldStatus, v))
+}
+
+// StatusContainsFold applies the ContainsFold predicate on the "status" field.
+func StatusContainsFold(v string) predicate.Request {
+	return predicate.Request(sql.FieldContainsFold(FieldStatus, v))
 }
 
 // AmountEQ applies the EQ predicate on the "amount" field.

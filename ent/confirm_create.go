@@ -26,7 +26,7 @@ func (cc *ConfirmCreate) SetRequestID(i int64) *ConfirmCreate {
 }
 
 // SetManagerID sets the "manager_id" field.
-func (cc *ConfirmCreate) SetManagerID(i int) *ConfirmCreate {
+func (cc *ConfirmCreate) SetManagerID(i int64) *ConfirmCreate {
 	cc.mutation.SetManagerID(i)
 	return cc
 }
@@ -123,7 +123,7 @@ func (cc *ConfirmCreate) createSpec() (*Confirm, *sqlgraph.CreateSpec) {
 		_node.RequestID = value
 	}
 	if value, ok := cc.mutation.ManagerID(); ok {
-		_spec.SetField(confirm.FieldManagerID, field.TypeInt, value)
+		_spec.SetField(confirm.FieldManagerID, field.TypeInt64, value)
 		_node.ManagerID = value
 	}
 	if value, ok := cc.mutation.Approved(); ok {

@@ -28,23 +28,16 @@ func (ru *RequestUpdate) Where(ps ...predicate.Request) *RequestUpdate {
 }
 
 // SetStatus sets the "status" field.
-func (ru *RequestUpdate) SetStatus(i int64) *RequestUpdate {
-	ru.mutation.ResetStatus()
-	ru.mutation.SetStatus(i)
+func (ru *RequestUpdate) SetStatus(s string) *RequestUpdate {
+	ru.mutation.SetStatus(s)
 	return ru
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ru *RequestUpdate) SetNillableStatus(i *int64) *RequestUpdate {
-	if i != nil {
-		ru.SetStatus(*i)
+func (ru *RequestUpdate) SetNillableStatus(s *string) *RequestUpdate {
+	if s != nil {
+		ru.SetStatus(*s)
 	}
-	return ru
-}
-
-// AddStatus adds i to the "status" field.
-func (ru *RequestUpdate) AddStatus(i int64) *RequestUpdate {
-	ru.mutation.AddStatus(i)
 	return ru
 }
 
@@ -174,10 +167,7 @@ func (ru *RequestUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := ru.mutation.Status(); ok {
-		_spec.SetField(request.FieldStatus, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedStatus(); ok {
-		_spec.AddField(request.FieldStatus, field.TypeInt64, value)
+		_spec.SetField(request.FieldStatus, field.TypeString, value)
 	}
 	if value, ok := ru.mutation.Amount(); ok {
 		_spec.SetField(request.FieldAmount, field.TypeInt64, value)
@@ -221,23 +211,16 @@ type RequestUpdateOne struct {
 }
 
 // SetStatus sets the "status" field.
-func (ruo *RequestUpdateOne) SetStatus(i int64) *RequestUpdateOne {
-	ruo.mutation.ResetStatus()
-	ruo.mutation.SetStatus(i)
+func (ruo *RequestUpdateOne) SetStatus(s string) *RequestUpdateOne {
+	ruo.mutation.SetStatus(s)
 	return ruo
 }
 
 // SetNillableStatus sets the "status" field if the given value is not nil.
-func (ruo *RequestUpdateOne) SetNillableStatus(i *int64) *RequestUpdateOne {
-	if i != nil {
-		ruo.SetStatus(*i)
+func (ruo *RequestUpdateOne) SetNillableStatus(s *string) *RequestUpdateOne {
+	if s != nil {
+		ruo.SetStatus(*s)
 	}
-	return ruo
-}
-
-// AddStatus adds i to the "status" field.
-func (ruo *RequestUpdateOne) AddStatus(i int64) *RequestUpdateOne {
-	ruo.mutation.AddStatus(i)
 	return ruo
 }
 
@@ -397,10 +380,7 @@ func (ruo *RequestUpdateOne) sqlSave(ctx context.Context) (_node *Request, err e
 		}
 	}
 	if value, ok := ruo.mutation.Status(); ok {
-		_spec.SetField(request.FieldStatus, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedStatus(); ok {
-		_spec.AddField(request.FieldStatus, field.TypeInt64, value)
+		_spec.SetField(request.FieldStatus, field.TypeString, value)
 	}
 	if value, ok := ruo.mutation.Amount(); ok {
 		_spec.SetField(request.FieldAmount, field.TypeInt64, value)

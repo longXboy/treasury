@@ -1,8 +1,9 @@
-package main
+package eth
 
 import (
 	"context"
 	"fmt"
+	"log"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -12,75 +13,85 @@ import (
 )
 
 const (
-	enndpoint = "http://localhost:8545"
+	enndpoint = "http://127.0.0.1:8545"
 	pk        = "564a0460e14e984e1f2a150b424fcb2385b1e6865e5a230474572a83001f9afd"
 	account   = "0x9D1C5b4Ff5E29823d686a9360B3508CBD8a26b80"
 )
 
-func main() {
+var client *ethclient.Client
+
+func init() {
+	var err error
+	client, err = ethclient.Dial(enndpoint)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+/*func main() {
 	TransferToken("0xd3ac7FDB5e12DDa9cf0a4a3128bf4950c632c36A", 100000000000000000, 4)
 	TransferToken("0xd3ac7FDB5e12DDa9cf0a4a3128bf4950c632c36A", 100000000000000000, 4)
 
 	GetTransactionStatus("0xee6e2c97f244d641eb1209fb9ebd13bb97234caa7f6fe207b8f7b604ab2669a3")
-}
+}*/
 
-func GetTransactionStatus(hash string) (bool, error) {
+func GetTransactionStatus(ctx context.Context, hash string) (success bool, pending bool, err error) {
 	txHash := common.HexToHash(hash)
-	client, err := ethclient.Dial(enndpoint)
+	_, pending, err = client.TransactionByHash(ctx, txHash)
 	if err != nil {
-		return false, err
+		return
 	}
-	receipt, err := client.TransactionReceipt(context.Background(), txHash)
+	if pending {
+		return
+	}
+	receipt, err := client.TransactionReceipt(ctx, txHash)
 	if err != nil {
-		return false, err
+		return
 	}
-	return receipt.Status == types.ReceiptStatusSuccessful, nil
+	success = receipt.Status == types.ReceiptStatusSuccessful
+	return
 }
 
-func GetAccountNonce() (uint64, error) {
+func GetAccountNonce(ctx context.Context) (uint64, error) {
 	address := common.HexToAddress(account)
-	client, err := ethclient.Dial(enndpoint)
-	if err != nil {
-		return 0, err
-	}
-	return client.PendingNonceAt(context.Background(), address)
+
+	return client.PendingNonceAt(ctx, address)
 }
 
-func TransferToken(recipient string, amount int64, nonce uint64) (string, error) {
-	client, err := ethclient.Dial(enndpoint)
-	if err != nil {
-		return "", err
-	}
-
+func SignTx(ctx context.Context, recipient string, amount int64, nonce uint64) (*types.Transaction, error) {
 	privateKey, err := crypto.HexToECDSA(pk)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	value := big.NewInt(amount) // in wei (0.1 eth)
+	value := big.NewInt(amount) // in wei
 	gasLimit := uint64(21000)   // in units
-	gasPrice, err := client.SuggestGasPrice(context.Background())
+	gasPrice, err := client.SuggestGasPrice(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	toAddress := common.HexToAddress(recipient)
 	tx := types.NewTransaction(nonce, toAddress, value, gasLimit, gasPrice, nil)
 
-	chainID, err := client.NetworkID(context.Background())
+	chainID, err := client.NetworkID(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+	return signedTx, nil
+}
 
-	err = client.SendTransaction(context.Background(), signedTx)
+func SendTransaction(ctx context.Context, signedTx *types.Transaction) (string, error) {
+	err := client.SendTransaction(ctx, signedTx)
+	// possible errors:
 	// nonce too low: next nonce
 	// already known
-	fmt.Printf("tx sent: %s at nonce %d err:%v\n", signedTx.Hash().Hex(), nonce, err.Error())
+	fmt.Printf("tx sent: %s  err:%v\n", signedTx.Hash().Hex(), err.Error())
 	if err != nil {
 		return "", err
 	}

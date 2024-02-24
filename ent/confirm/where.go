@@ -58,7 +58,7 @@ func RequestID(v int64) predicate.Confirm {
 }
 
 // ManagerID applies equality check predicate on the "manager_id" field. It's identical to ManagerIDEQ.
-func ManagerID(v int) predicate.Confirm {
+func ManagerID(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldEQ(FieldManagerID, v))
 }
 
@@ -108,42 +108,42 @@ func RequestIDLTE(v int64) predicate.Confirm {
 }
 
 // ManagerIDEQ applies the EQ predicate on the "manager_id" field.
-func ManagerIDEQ(v int) predicate.Confirm {
+func ManagerIDEQ(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldEQ(FieldManagerID, v))
 }
 
 // ManagerIDNEQ applies the NEQ predicate on the "manager_id" field.
-func ManagerIDNEQ(v int) predicate.Confirm {
+func ManagerIDNEQ(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldNEQ(FieldManagerID, v))
 }
 
 // ManagerIDIn applies the In predicate on the "manager_id" field.
-func ManagerIDIn(vs ...int) predicate.Confirm {
+func ManagerIDIn(vs ...int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldIn(FieldManagerID, vs...))
 }
 
 // ManagerIDNotIn applies the NotIn predicate on the "manager_id" field.
-func ManagerIDNotIn(vs ...int) predicate.Confirm {
+func ManagerIDNotIn(vs ...int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldNotIn(FieldManagerID, vs...))
 }
 
 // ManagerIDGT applies the GT predicate on the "manager_id" field.
-func ManagerIDGT(v int) predicate.Confirm {
+func ManagerIDGT(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldGT(FieldManagerID, v))
 }
 
 // ManagerIDGTE applies the GTE predicate on the "manager_id" field.
-func ManagerIDGTE(v int) predicate.Confirm {
+func ManagerIDGTE(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldGTE(FieldManagerID, v))
 }
 
 // ManagerIDLT applies the LT predicate on the "manager_id" field.
-func ManagerIDLT(v int) predicate.Confirm {
+func ManagerIDLT(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldLT(FieldManagerID, v))
 }
 
 // ManagerIDLTE applies the LTE predicate on the "manager_id" field.
-func ManagerIDLTE(v int) predicate.Confirm {
+func ManagerIDLTE(v int64) predicate.Confirm {
 	return predicate.Confirm(sql.FieldLTE(FieldManagerID, v))
 }
 

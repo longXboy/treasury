@@ -261,7 +261,7 @@ func (rq *RequestQuery) Clone() *RequestQuery {
 // Example:
 //
 //	var v []struct {
-//		Status int64 `json:"status,omitempty"`
+//		Status string `json:"status,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (rq *RequestQuery) GroupBy(field string, fields ...string) *RequestGroupBy 
 // Example:
 //
 //	var v []struct {
-//		Status int64 `json:"status,omitempty"`
+//		Status string `json:"status,omitempty"`
 //	}
 //
 //	client.Request.Query().

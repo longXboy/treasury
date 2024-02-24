@@ -49,14 +49,14 @@ func (cu *ConfirmUpdate) AddRequestID(i int64) *ConfirmUpdate {
 }
 
 // SetManagerID sets the "manager_id" field.
-func (cu *ConfirmUpdate) SetManagerID(i int) *ConfirmUpdate {
+func (cu *ConfirmUpdate) SetManagerID(i int64) *ConfirmUpdate {
 	cu.mutation.ResetManagerID()
 	cu.mutation.SetManagerID(i)
 	return cu
 }
 
 // SetNillableManagerID sets the "manager_id" field if the given value is not nil.
-func (cu *ConfirmUpdate) SetNillableManagerID(i *int) *ConfirmUpdate {
+func (cu *ConfirmUpdate) SetNillableManagerID(i *int64) *ConfirmUpdate {
 	if i != nil {
 		cu.SetManagerID(*i)
 	}
@@ -64,7 +64,7 @@ func (cu *ConfirmUpdate) SetNillableManagerID(i *int) *ConfirmUpdate {
 }
 
 // AddManagerID adds i to the "manager_id" field.
-func (cu *ConfirmUpdate) AddManagerID(i int) *ConfirmUpdate {
+func (cu *ConfirmUpdate) AddManagerID(i int64) *ConfirmUpdate {
 	cu.mutation.AddManagerID(i)
 	return cu
 }
@@ -117,10 +117,10 @@ func (cu *ConfirmUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.AddField(confirm.FieldRequestID, field.TypeInt64, value)
 	}
 	if value, ok := cu.mutation.ManagerID(); ok {
-		_spec.SetField(confirm.FieldManagerID, field.TypeInt, value)
+		_spec.SetField(confirm.FieldManagerID, field.TypeInt64, value)
 	}
 	if value, ok := cu.mutation.AddedManagerID(); ok {
-		_spec.AddField(confirm.FieldManagerID, field.TypeInt, value)
+		_spec.AddField(confirm.FieldManagerID, field.TypeInt64, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -164,14 +164,14 @@ func (cuo *ConfirmUpdateOne) AddRequestID(i int64) *ConfirmUpdateOne {
 }
 
 // SetManagerID sets the "manager_id" field.
-func (cuo *ConfirmUpdateOne) SetManagerID(i int) *ConfirmUpdateOne {
+func (cuo *ConfirmUpdateOne) SetManagerID(i int64) *ConfirmUpdateOne {
 	cuo.mutation.ResetManagerID()
 	cuo.mutation.SetManagerID(i)
 	return cuo
 }
 
 // SetNillableManagerID sets the "manager_id" field if the given value is not nil.
-func (cuo *ConfirmUpdateOne) SetNillableManagerID(i *int) *ConfirmUpdateOne {
+func (cuo *ConfirmUpdateOne) SetNillableManagerID(i *int64) *ConfirmUpdateOne {
 	if i != nil {
 		cuo.SetManagerID(*i)
 	}
@@ -179,7 +179,7 @@ func (cuo *ConfirmUpdateOne) SetNillableManagerID(i *int) *ConfirmUpdateOne {
 }
 
 // AddManagerID adds i to the "manager_id" field.
-func (cuo *ConfirmUpdateOne) AddManagerID(i int) *ConfirmUpdateOne {
+func (cuo *ConfirmUpdateOne) AddManagerID(i int64) *ConfirmUpdateOne {
 	cuo.mutation.AddManagerID(i)
 	return cuo
 }
@@ -262,10 +262,10 @@ func (cuo *ConfirmUpdateOne) sqlSave(ctx context.Context) (_node *Confirm, err e
 		_spec.AddField(confirm.FieldRequestID, field.TypeInt64, value)
 	}
 	if value, ok := cuo.mutation.ManagerID(); ok {
-		_spec.SetField(confirm.FieldManagerID, field.TypeInt, value)
+		_spec.SetField(confirm.FieldManagerID, field.TypeInt64, value)
 	}
 	if value, ok := cuo.mutation.AddedManagerID(); ok {
-		_spec.AddField(confirm.FieldManagerID, field.TypeInt, value)
+		_spec.AddField(confirm.FieldManagerID, field.TypeInt64, value)
 	}
 	_node = &Confirm{config: cuo.config}
 	_spec.Assign = _node.assignValues

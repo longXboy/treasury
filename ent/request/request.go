@@ -48,6 +48,15 @@ func ValidColumn(column string) bool {
 	return false
 }
 
+var (
+	// DefaultStatus holds the default value on creation for the "status" field.
+	DefaultStatus string
+	// DefaultAmount holds the default value on creation for the "amount" field.
+	DefaultAmount int64
+	// DefaultExecuted holds the default value on creation for the "executed" field.
+	DefaultExecuted bool
+)
+
 // OrderOption defines the ordering options for the Request queries.
 type OrderOption func(*sql.Selector)
 

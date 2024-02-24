@@ -12,7 +12,7 @@ var (
 	ConfirmsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "request_id", Type: field.TypeInt64},
-		{Name: "manager_id", Type: field.TypeInt},
+		{Name: "manager_id", Type: field.TypeInt64},
 		{Name: "approved", Type: field.TypeBool},
 	}
 	// ConfirmsTable holds the schema information for the "confirms" table.
@@ -31,12 +31,12 @@ var (
 	// RequestsColumns holds the columns for the "requests" table.
 	RequestsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "status", Type: field.TypeInt64},
-		{Name: "amount", Type: field.TypeInt64},
+		{Name: "status", Type: field.TypeString, Default: "pending"},
+		{Name: "amount", Type: field.TypeInt64, Default: 0},
 		{Name: "recipient", Type: field.TypeString},
 		{Name: "tx_hash", Type: field.TypeString},
 		{Name: "nonce", Type: field.TypeInt64},
-		{Name: "executed", Type: field.TypeBool},
+		{Name: "executed", Type: field.TypeBool, Default: false},
 	}
 	// RequestsTable holds the schema information for the "requests" table.
 	RequestsTable = &schema.Table{

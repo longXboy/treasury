@@ -20,14 +20,30 @@ type RequestCreate struct {
 }
 
 // SetStatus sets the "status" field.
-func (rc *RequestCreate) SetStatus(i int64) *RequestCreate {
-	rc.mutation.SetStatus(i)
+func (rc *RequestCreate) SetStatus(s string) *RequestCreate {
+	rc.mutation.SetStatus(s)
+	return rc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (rc *RequestCreate) SetNillableStatus(s *string) *RequestCreate {
+	if s != nil {
+		rc.SetStatus(*s)
+	}
 	return rc
 }
 
 // SetAmount sets the "amount" field.
 func (rc *RequestCreate) SetAmount(i int64) *RequestCreate {
 	rc.mutation.SetAmount(i)
+	return rc
+}
+
+// SetNillableAmount sets the "amount" field if the given value is not nil.
+func (rc *RequestCreate) SetNillableAmount(i *int64) *RequestCreate {
+	if i != nil {
+		rc.SetAmount(*i)
+	}
 	return rc
 }
 
@@ -55,6 +71,14 @@ func (rc *RequestCreate) SetExecuted(b bool) *RequestCreate {
 	return rc
 }
 
+// SetNillableExecuted sets the "executed" field if the given value is not nil.
+func (rc *RequestCreate) SetNillableExecuted(b *bool) *RequestCreate {
+	if b != nil {
+		rc.SetExecuted(*b)
+	}
+	return rc
+}
+
 // SetID sets the "id" field.
 func (rc *RequestCreate) SetID(i int64) *RequestCreate {
 	rc.mutation.SetID(i)
@@ -68,6 +92,7 @@ func (rc *RequestCreate) Mutation() *RequestMutation {
 
 // Save creates the Request in the database.
 func (rc *RequestCreate) Save(ctx context.Context) (*Request, error) {
+	rc.defaults()
 	return withHooks(ctx, rc.sqlSave, rc.mutation, rc.hooks)
 }
 
@@ -90,6 +115,22 @@ func (rc *RequestCreate) Exec(ctx context.Context) error {
 func (rc *RequestCreate) ExecX(ctx context.Context) {
 	if err := rc.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (rc *RequestCreate) defaults() {
+	if _, ok := rc.mutation.Status(); !ok {
+		v := request.DefaultStatus
+		rc.mutation.SetStatus(v)
+	}
+	if _, ok := rc.mutation.Amount(); !ok {
+		v := request.DefaultAmount
+		rc.mutation.SetAmount(v)
+	}
+	if _, ok := rc.mutation.Executed(); !ok {
+		v := request.DefaultExecuted
+		rc.mutation.SetExecuted(v)
 	}
 }
 
@@ -146,7 +187,7 @@ func (rc *RequestCreate) createSpec() (*Request, *sqlgraph.CreateSpec) {
 		_spec.ID.Value = id
 	}
 	if value, ok := rc.mutation.Status(); ok {
-		_spec.SetField(request.FieldStatus, field.TypeInt64, value)
+		_spec.SetField(request.FieldStatus, field.TypeString, value)
 		_node.Status = value
 	}
 	if value, ok := rc.mutation.Amount(); ok {
@@ -190,6 +231,7 @@ func (rcb *RequestCreateBulk) Save(ctx context.Context) ([]*Request, error) {
 	for i := range rcb.builders {
 		func(i int, root context.Context) {
 			builder := rcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*RequestMutation)
 				if !ok {

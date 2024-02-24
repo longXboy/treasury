@@ -17,7 +17,7 @@ type Request struct {
 	// ID of the ent.
 	ID int64 `json:"id,omitempty"`
 	// pending, approved, rejected
-	Status int64 `json:"status,omitempty"`
+	Status string `json:"status,omitempty"`
 	// amount of token requested
 	Amount int64 `json:"amount,omitempty"`
 	// recipient's account address
@@ -38,9 +38,9 @@ func (*Request) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case request.FieldExecuted:
 			values[i] = new(sql.NullBool)
-		case request.FieldID, request.FieldStatus, request.FieldAmount, request.FieldNonce:
+		case request.FieldID, request.FieldAmount, request.FieldNonce:
 			values[i] = new(sql.NullInt64)
-		case request.FieldRecipient, request.FieldTxHash:
+		case request.FieldStatus, request.FieldRecipient, request.FieldTxHash:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -64,10 +64,10 @@ func (r *Request) assignValues(columns []string, values []any) error {
 			}
 			r.ID = int64(value.Int64)
 		case request.FieldStatus:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				r.Status = value.Int64
+				r.Status = value.String
 			}
 		case request.FieldAmount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -136,7 +136,7 @@ func (r *Request) String() string {
 	builder.WriteString("Request(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", r.ID))
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", r.Status))
+	builder.WriteString(r.Status)
 	builder.WriteString(", ")
 	builder.WriteString("amount=")
 	builder.WriteString(fmt.Sprintf("%v", r.Amount))

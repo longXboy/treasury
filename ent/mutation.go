@@ -36,8 +36,8 @@ type ConfirmMutation struct {
 	id            *int64
 	request_id    *int64
 	addrequest_id *int64
-	manager_id    *int
-	addmanager_id *int
+	manager_id    *int64
+	addmanager_id *int64
 	approved      *bool
 	clearedFields map[string]struct{}
 	done          bool
@@ -206,13 +206,13 @@ func (m *ConfirmMutation) ResetRequestID() {
 }
 
 // SetManagerID sets the "manager_id" field.
-func (m *ConfirmMutation) SetManagerID(i int) {
+func (m *ConfirmMutation) SetManagerID(i int64) {
 	m.manager_id = &i
 	m.addmanager_id = nil
 }
 
 // ManagerID returns the value of the "manager_id" field in the mutation.
-func (m *ConfirmMutation) ManagerID() (r int, exists bool) {
+func (m *ConfirmMutation) ManagerID() (r int64, exists bool) {
 	v := m.manager_id
 	if v == nil {
 		return
@@ -223,7 +223,7 @@ func (m *ConfirmMutation) ManagerID() (r int, exists bool) {
 // OldManagerID returns the old "manager_id" field's value of the Confirm entity.
 // If the Confirm object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ConfirmMutation) OldManagerID(ctx context.Context) (v int, err error) {
+func (m *ConfirmMutation) OldManagerID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldManagerID is only allowed on UpdateOne operations")
 	}
@@ -238,7 +238,7 @@ func (m *ConfirmMutation) OldManagerID(ctx context.Context) (v int, err error) {
 }
 
 // AddManagerID adds i to the "manager_id" field.
-func (m *ConfirmMutation) AddManagerID(i int) {
+func (m *ConfirmMutation) AddManagerID(i int64) {
 	if m.addmanager_id != nil {
 		*m.addmanager_id += i
 	} else {
@@ -247,7 +247,7 @@ func (m *ConfirmMutation) AddManagerID(i int) {
 }
 
 // AddedManagerID returns the value that was added to the "manager_id" field in this mutation.
-func (m *ConfirmMutation) AddedManagerID() (r int, exists bool) {
+func (m *ConfirmMutation) AddedManagerID() (r int64, exists bool) {
 	v := m.addmanager_id
 	if v == nil {
 		return
@@ -387,7 +387,7 @@ func (m *ConfirmMutation) SetField(name string, value ent.Value) error {
 		m.SetRequestID(v)
 		return nil
 	case confirm.FieldManagerID:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -443,7 +443,7 @@ func (m *ConfirmMutation) AddField(name string, value ent.Value) error {
 		m.AddRequestID(v)
 		return nil
 	case confirm.FieldManagerID:
-		v, ok := value.(int)
+		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -543,8 +543,7 @@ type RequestMutation struct {
 	op            Op
 	typ           string
 	id            *int64
-	status        *int64
-	addstatus     *int64
+	status        *string
 	amount        *int64
 	addamount     *int64
 	recipient     *string
@@ -663,13 +662,12 @@ func (m *RequestMutation) IDs(ctx context.Context) ([]int64, error) {
 }
 
 // SetStatus sets the "status" field.
-func (m *RequestMutation) SetStatus(i int64) {
-	m.status = &i
-	m.addstatus = nil
+func (m *RequestMutation) SetStatus(s string) {
+	m.status = &s
 }
 
 // Status returns the value of the "status" field in the mutation.
-func (m *RequestMutation) Status() (r int64, exists bool) {
+func (m *RequestMutation) Status() (r string, exists bool) {
 	v := m.status
 	if v == nil {
 		return
@@ -680,7 +678,7 @@ func (m *RequestMutation) Status() (r int64, exists bool) {
 // OldStatus returns the old "status" field's value of the Request entity.
 // If the Request object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RequestMutation) OldStatus(ctx context.Context) (v int64, err error) {
+func (m *RequestMutation) OldStatus(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
 	}
@@ -694,28 +692,9 @@ func (m *RequestMutation) OldStatus(ctx context.Context) (v int64, err error) {
 	return oldValue.Status, nil
 }
 
-// AddStatus adds i to the "status" field.
-func (m *RequestMutation) AddStatus(i int64) {
-	if m.addstatus != nil {
-		*m.addstatus += i
-	} else {
-		m.addstatus = &i
-	}
-}
-
-// AddedStatus returns the value that was added to the "status" field in this mutation.
-func (m *RequestMutation) AddedStatus() (r int64, exists bool) {
-	v := m.addstatus
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ResetStatus resets all changes to the "status" field.
 func (m *RequestMutation) ResetStatus() {
 	m.status = nil
-	m.addstatus = nil
 }
 
 // SetAmount sets the "amount" field.
@@ -1042,7 +1021,7 @@ func (m *RequestMutation) OldField(ctx context.Context, name string) (ent.Value,
 func (m *RequestMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case request.FieldStatus:
-		v, ok := value.(int64)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1091,9 +1070,6 @@ func (m *RequestMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *RequestMutation) AddedFields() []string {
 	var fields []string
-	if m.addstatus != nil {
-		fields = append(fields, request.FieldStatus)
-	}
 	if m.addamount != nil {
 		fields = append(fields, request.FieldAmount)
 	}
@@ -1108,8 +1084,6 @@ func (m *RequestMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *RequestMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case request.FieldStatus:
-		return m.AddedStatus()
 	case request.FieldAmount:
 		return m.AddedAmount()
 	case request.FieldNonce:
@@ -1123,13 +1097,6 @@ func (m *RequestMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *RequestMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case request.FieldStatus:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddStatus(v)
-		return nil
 	case request.FieldAmount:
 		v, ok := value.(int64)
 		if !ok {

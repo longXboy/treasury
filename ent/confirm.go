@@ -19,7 +19,7 @@ type Confirm struct {
 	// request id
 	RequestID int64 `json:"request_id,omitempty"`
 	// manager id
-	ManagerID int `json:"manager_id,omitempty"`
+	ManagerID int64 `json:"manager_id,omitempty"`
 	// approve or reject
 	Approved     bool `json:"approved,omitempty"`
 	selectValues sql.SelectValues
@@ -65,7 +65,7 @@ func (c *Confirm) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field manager_id", values[i])
 			} else if value.Valid {
-				c.ManagerID = int(value.Int64)
+				c.ManagerID = value.Int64
 			}
 		case confirm.FieldApproved:
 			if value, ok := values[i].(*sql.NullBool); !ok {

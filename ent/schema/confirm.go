@@ -16,7 +16,7 @@ func (Confirm) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("id").Immutable(),
 		field.Int64("request_id").Comment("request id"),
-		field.Int("manager_id").Comment("manager id"),
+		field.Int64("manager_id").Comment("manager id"),
 		field.Bool("approved").Comment("approve or reject").Immutable(),
 	}
 }
