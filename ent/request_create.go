@@ -59,6 +59,14 @@ func (rc *RequestCreate) SetTxHash(s string) *RequestCreate {
 	return rc
 }
 
+// SetNillableTxHash sets the "tx_hash" field if the given value is not nil.
+func (rc *RequestCreate) SetNillableTxHash(s *string) *RequestCreate {
+	if s != nil {
+		rc.SetTxHash(*s)
+	}
+	return rc
+}
+
 // SetNonce sets the "nonce" field.
 func (rc *RequestCreate) SetNonce(i int64) *RequestCreate {
 	rc.mutation.SetNonce(i)
@@ -135,6 +143,10 @@ func (rc *RequestCreate) defaults() {
 	if _, ok := rc.mutation.Amount(); !ok {
 		v := request.DefaultAmount
 		rc.mutation.SetAmount(v)
+	}
+	if _, ok := rc.mutation.TxHash(); !ok {
+		v := request.DefaultTxHash
+		rc.mutation.SetTxHash(v)
 	}
 	if _, ok := rc.mutation.Nonce(); !ok {
 		v := request.DefaultNonce

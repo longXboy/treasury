@@ -7,3 +7,4 @@ execution/geth.ipc
 .DS_Store
 cmd/cmd
 *.exe
+treasure

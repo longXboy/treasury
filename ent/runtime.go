@@ -21,6 +21,10 @@ func init() {
 	requestDescAmount := requestFields[2].Descriptor()
 	// request.DefaultAmount holds the default value on creation for the amount field.
 	request.DefaultAmount = requestDescAmount.Default.(int64)
+	// requestDescTxHash is the schema descriptor for tx_hash field.
+	requestDescTxHash := requestFields[4].Descriptor()
+	// request.DefaultTxHash holds the default value on creation for the tx_hash field.
+	request.DefaultTxHash = requestDescTxHash.Default.(string)
 	// requestDescNonce is the schema descriptor for nonce field.
 	requestDescNonce := requestFields[5].Descriptor()
 	// request.DefaultNonce holds the default value on creation for the nonce field.

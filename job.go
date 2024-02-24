@@ -55,6 +55,7 @@ func runJob() {
 				time.Sleep(time.Second)
 				continue
 			}
+			break
 		}
 	}
 }

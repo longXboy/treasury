@@ -1,3 +1,4 @@
 docker compose up -d
-go build cmd
-./cmd/cmd
+go build 
+chmod +x ./treasure
+./treasure

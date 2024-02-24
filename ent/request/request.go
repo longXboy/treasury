@@ -53,6 +53,8 @@ var (
 	DefaultStatus string
 	// DefaultAmount holds the default value on creation for the "amount" field.
 	DefaultAmount int64
+	// DefaultTxHash holds the default value on creation for the "tx_hash" field.
+	DefaultTxHash string
 	// DefaultNonce holds the default value on creation for the "nonce" field.
 	DefaultNonce int64
 	// DefaultExecuted holds the default value on creation for the "executed" field.

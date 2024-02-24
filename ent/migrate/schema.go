@@ -34,7 +34,7 @@ var (
 		{Name: "status", Type: field.TypeString, Default: "pending"},
 		{Name: "amount", Type: field.TypeInt64, Default: 0},
 		{Name: "recipient", Type: field.TypeString},
-		{Name: "tx_hash", Type: field.TypeString},
+		{Name: "tx_hash", Type: field.TypeString, Default: ""},
 		{Name: "nonce", Type: field.TypeInt64, Default: -1},
 		{Name: "executed", Type: field.TypeBool, Default: false},
 	}

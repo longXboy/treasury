@@ -91,7 +91,8 @@ func SendTransaction(ctx context.Context, signedTx *types.Transaction) (string, 
 	// possible errors:
 	// nonce too low: next nonce
 	// already known
-	fmt.Printf("tx sent: %s  err:%v\n", signedTx.Hash().Hex(), err.Error())
+
+	fmt.Printf("tx sent: %s  err:%v\n", signedTx.Hash().Hex(), err)
 	if err != nil {
 		return "", err
 	}
