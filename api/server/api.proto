@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package helloworld;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/go-kratos/examples/helloworld/helloworld";
+
+// The greeting service definition.
+service Treasury {
+  // get withdraw status
+  rpc GetWithdrawStatus (GetWithdrawStatusRequest) returns (GetWithdrawStatusReply)  {
+        option (google.api.http) = {
+            get: "/withdraw/{request_id}",
+        };
+  }
+
+    // create withdraw 
+  rpc CreateWithdraw (CreateWithdrawRequest) returns (CreateWithdrawReply)  {
+        option (google.api.http) = {
+            post: "/withdraw",
+            body: "*",
+        };
+  }
+
+ // confirm withdraw request
+  rpc ConfirmWithdraw (ConfirmWithdrawRequest) returns (ConfirmWithdrawReply)  {
+        option (google.api.http) = {
+            post: "/confirm/{request_id}",
+            body: "*",
+        };
+  }
+}
+
+// The request message containing the user's name.
+message GetWithdrawStatusRequest {
+  int64 request_id = 1;
+}
+
+// The response message containing the greetings
+message GetWithdrawStatusReply {
+    string status = 1;
+    int64 amount = 2;
+    string recipient  = 3;
+    string tx_hash  =4;
+    int64 nonce = 5;
+    bool executed = 6; 
+}
+
+message CreateWithdrawRequest {
+    int64 amount = 1;
+    string recipient  = 2;
+}
+
+message CreateWithdrawReply {
+    int64 request_id = 1;
+}
+
+message ConfirmWithdrawRequest {
+    int64 request_id = 1;
+    int64 manager_id = 2;
+}
+
+message ConfirmWithdrawReply {
+    bool success = 1;
+}
