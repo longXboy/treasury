@@ -7,6 +7,7 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	_ "github.com/go-sql-driver/mysql"
 	pb "github.com/longxboy/treasure/api/server"
 	"github.com/longxboy/treasure/ent"
 )

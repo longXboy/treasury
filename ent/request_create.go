@@ -65,6 +65,14 @@ func (rc *RequestCreate) SetNonce(i int64) *RequestCreate {
 	return rc
 }
 
+// SetNillableNonce sets the "nonce" field if the given value is not nil.
+func (rc *RequestCreate) SetNillableNonce(i *int64) *RequestCreate {
+	if i != nil {
+		rc.SetNonce(*i)
+	}
+	return rc
+}
+
 // SetExecuted sets the "executed" field.
 func (rc *RequestCreate) SetExecuted(b bool) *RequestCreate {
 	rc.mutation.SetExecuted(b)
@@ -127,6 +135,10 @@ func (rc *RequestCreate) defaults() {
 	if _, ok := rc.mutation.Amount(); !ok {
 		v := request.DefaultAmount
 		rc.mutation.SetAmount(v)
+	}
+	if _, ok := rc.mutation.Nonce(); !ok {
+		v := request.DefaultNonce
+		rc.mutation.SetNonce(v)
 	}
 	if _, ok := rc.mutation.Executed(); !ok {
 		v := request.DefaultExecuted

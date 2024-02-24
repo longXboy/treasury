@@ -37,7 +37,9 @@ func runJob() {
 		<-ticker.C
 		req, err = dbClient.Request.Query().Where(request.Status(RequestStatusApproved), request.Executed(false), request.NonceEQ(-1)).Order(ent.Asc(request.FieldID)).First(context.Background())
 		if err != nil {
-			fmt.Println("Query error:", err)
+			if !ent.IsNotFound(err) {
+				fmt.Println("Query error:", err)
+			}
 			continue
 		}
 		nonce, err := eth.GetAccountNonce(context.Background())
